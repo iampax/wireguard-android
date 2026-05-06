@@ -68,6 +68,14 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
                     dismiss()
                     onRequestScanQRCode()
                 }
+                dialog.findViewById<View>(R.id.create_from_clipboard)?.setOnClickListener {
+                    dismiss()
+                    onRequestImportFromClipboard()
+                }
+                dialog.findViewById<View>(R.id.create_from_text)?.setOnClickListener {
+                    dismiss()
+                    onRequestImportFromText()
+                }
             }
         })
         val gradientDrawable = GradientDrawable().apply {
@@ -93,11 +101,21 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
         setFragmentResult(REQUEST_KEY_NEW_TUNNEL, Bundle().apply { putString(REQUEST_METHOD, REQUEST_SCAN) })
     }
 
+    private fun onRequestImportFromClipboard() {
+        setFragmentResult(REQUEST_KEY_NEW_TUNNEL, Bundle().apply { putString(REQUEST_METHOD, REQUEST_CLIPBOARD) })
+    }
+
+    private fun onRequestImportFromText() {
+        setFragmentResult(REQUEST_KEY_NEW_TUNNEL, Bundle().apply { putString(REQUEST_METHOD, REQUEST_TEXT) })
+    }
+
     companion object {
         const val REQUEST_KEY_NEW_TUNNEL = "request_new_tunnel"
         const val REQUEST_METHOD = "request_method"
         const val REQUEST_CREATE = "request_create"
         const val REQUEST_IMPORT = "request_import"
         const val REQUEST_SCAN = "request_scan"
+        const val REQUEST_CLIPBOARD = "request_clipboard"
+        const val REQUEST_TEXT = "request_text"
     }
 }

@@ -97,8 +97,16 @@
     <string name="create_bin_dir_error">Cannot create local binary directory</string>
     <string name="create_downloads_file_error">Cannot create file in downloads directory</string>
     <string name="create_empty">Create from scratch</string>
+    <string name="create_from_clipboard">Import from clipboard</string>
     <string name="create_from_file">Import from file or archive</string>
     <string name="create_from_qr_code">Scan from QR code</string>
+    <string name="create_from_text">Paste or type config</string>
+    <string name="paste_config_dialog_title">Import tunnel configuration</string>
+    <string name="paste_config_hint">Paste or type your WireGuard config here…</string>
+    <string name="paste_config_import">Import</string>
+    <string name="paste_config_empty_error">Configuration text cannot be empty</string>
+    <string name="clipboard_empty_error">Clipboard does not contain any text</string>
+    <string name="clipboard_import_success">Tunnel imported from clipboard</string>
     <string name="create_output_dir_error">Cannot create output directory</string>
     <string name="create_temp_dir_error">Cannot create local temporary directory</string>
     <string name="create_tunnel">Create Tunnel</string>

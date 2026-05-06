@@ -4,6 +4,8 @@
  */
 package com.wireguard.android.fragment
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -122,6 +124,15 @@ class TunnelListFragment : BaseFragment() {
                                     .setPrompt(getString(R.string.qr_code_hint))
                             )
                         }
+
+                        AddTunnelsSheet.REQUEST_CLIPBOARD -> {
+                            onRequestImportFromClipboard()
+                        }
+
+                        AddTunnelsSheet.REQUEST_TEXT -> {
+                            PasteConfigDialogFragment()
+                                .show(childFragmentManager, "PASTE_CONFIG")
+                        }
                     }
                 }
                 bottomSheet.showNow(childFragmentManager, "BOTTOM_SHEET")
@@ -151,6 +162,18 @@ class TunnelListFragment : BaseFragment() {
             val tunnels = Application.getTunnelManager().getTunnels()
             if (newTunnel != null) viewForTunnel(newTunnel, tunnels)?.setSingleSelected(true)
             if (oldTunnel != null) viewForTunnel(oldTunnel, tunnels)?.setSingleSelected(false)
+        }
+    }
+
+    private fun onRequestImportFromClipboard() {
+        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val text = clipboard.primaryClip?.getItemAt(0)?.coerceToText(requireContext())?.toString()
+        if (text.isNullOrBlank()) {
+            showSnackbar(getString(R.string.clipboard_empty_error))
+            return
+        }
+        lifecycleScope.launch {
+            TunnelImporter.importTunnel(parentFragmentManager, text) { showSnackbar(it) }
         }
     }
 
@@ -194,7 +217,7 @@ class TunnelListFragment : BaseFragment() {
         }
     }
 
-    private fun showSnackbar(message: CharSequence) {
+    internal fun showSnackbar(message: CharSequence) {
         val binding = binding
         if (binding != null)
             Snackbar.make(binding.mainContainer, message, Snackbar.LENGTH_LONG)
